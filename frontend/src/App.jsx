@@ -11,30 +11,60 @@ function App() {
   const [result, setResult] = useState(null);
   const resultRef = useRef(null);
 
-  const handleAsk = () => {
+  const [questionId, setQuestionId] = useState(null);
+
+  const handleAsk = async () => {
     if (!query.trim()) return;
     setIsLoading(true);
     setResult(null);
+    setQuestionId(null);
 
-    // Mock API call
-    setTimeout(() => {
-      // Mock response based on query keywords for demonstration
-      const isUnsafe =
-        query.toLowerCase().includes("pain") ||
-        query.toLowerCase().includes("injury");
+    try {
+      const response = await fetch("http://localhost:5001/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question: query }),
+      });
+
+      const data = await response.json();
 
       setResult({
-        answer:
-          "To practice this pose safely, begin in Tadasana. Inhale and raise your arms overhead. Exhale and fold forward from your hips, keeping your spine long. If you have tight hamstrings, bend your knees slightly. Let your head hang heavy and relax your neck. Hold for 5-10 breaths.",
-        safetyWarning: isUnsafe,
-        sources: [
-          { id: 1, title: "Light on Yoga - B.K.S. Iyengar" },
-          { id: 2, title: "Yoga Journal - Safe Forward Folds" },
-          { id: 3, title: "Anatomy of Hatha Yoga" },
-        ],
+        answer: data.answer,
+        safetyWarning: data.isUnsafe,
+        sources: data.sources.map((s, i) => ({ id: i, title: s })),
       });
+      setQuestionId(data.id);
+    } catch (error) {
+      console.error("Error fetching answer:", error);
+      setResult({
+        answer: "Sorry, something went wrong. Please try again later.",
+        safetyWarning: false,
+        sources: [],
+      });
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
+  };
+
+  const handleFeedback = async (type) => {
+    if (!questionId) return;
+    try {
+      await fetch("http://localhost:5001/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          questionId,
+          feedback: type,
+        }),
+      });
+      alert("Thanks for your feedback!");
+    } catch (error) {
+      console.error("Error sending feedback:", error);
+    }
   };
 
   useEffect(() => {
@@ -63,7 +93,11 @@ function App() {
             className="w-full max-w-3xl mt-12 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-forwards"
           >
             <SafetyWarning isUnsafe={result.safetyWarning} />
-            <AnswerCard answer={result.answer} sources={result.sources} />
+            <AnswerCard
+              answer={result.answer}
+              sources={result.sources}
+              onFeedback={handleFeedback}
+            />
           </div>
         )}
       </div>

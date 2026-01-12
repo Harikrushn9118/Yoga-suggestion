@@ -2,7 +2,7 @@ import { Sparkles } from "lucide-react";
 import SourcesList from "./SourcesList";
 import ActionButtons from "./ActionButtons";
 
-function AnswerCard({ answer, sources }) {
+function AnswerCard({ answer, sources, onFeedback }) {
   return (
     <div className="bg-white dark:bg-zinc-800/50 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-white/5 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
@@ -24,7 +24,7 @@ function AnswerCard({ answer, sources }) {
         </div>
 
         <SourcesList sources={sources} />
-        <ActionButtons />
+        <ActionButtons onFeedback={onFeedback} />
       </div>
     </div>
   );
