@@ -21,6 +21,12 @@ app.use("/", apiRoutes);
 // Seed Data (if empty)
 ragService.seedData();
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export for Vercel
+module.exports = app;
+
+// Only listen if running locally (not imported as a module)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
