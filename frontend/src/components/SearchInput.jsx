@@ -11,7 +11,7 @@ function SearchInput({ query, setQuery, handleAsk, isLoading }) {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAsk()}
           placeholder="Ask anything about yoga..."
-          className="flex-1 bg-transparent border-none outline-none px-6 py-4 text-lg placeholder-gray-400 dark:placeholder-gray-500 w-full"
+          className="flex-1 bg-transparent border-none outline-none px-6 py-4 text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 w-full"
         />
         <button
           onClick={handleAsk}

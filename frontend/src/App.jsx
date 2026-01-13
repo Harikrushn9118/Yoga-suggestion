@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
+import ThemeToggle from "./components/ThemeToggle";
 import SearchInput from "./components/SearchInput";
 import LoadingState from "./components/LoadingState";
 import SafetyWarning from "./components/SafetyWarning";
@@ -76,6 +77,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 text-gray-900 dark:text-gray-100 font-sans selection:bg-indigo-100 dark:selection:bg-indigo-900/30 flex flex-col">
       <div className="w-full h-full flex-1 flex flex-col items-center justify-center p-4 md:p-8 transition-all duration-500">
+        <ThemeToggle />
         <Header hasResult={!!result} />
 
         <SearchInput
