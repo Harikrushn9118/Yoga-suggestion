@@ -21,7 +21,7 @@ function App() {
     setQuestionId(null);
 
     try {
-      const response = await fetch("http://localhost:5001/ask", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/ask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ function App() {
   const handleFeedback = async (type) => {
     if (!questionId) return;
     try {
-      await fetch("http://localhost:5001/feedback", {
+      await fetch(`${import.meta.env.VITE_API_URL}/feedback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
