@@ -9,7 +9,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Use Gemini ONLY for the final answer generation
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
 const getAnswer = async (question) => {
   try {
