@@ -18,7 +18,7 @@ function AnswerCard({ answer, sources, onFeedback }) {
         </div>
 
         <div className="prose dark:prose-invert max-w-none">
-          <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+          <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 whitespace-pre-line">
             {answer}
           </p>
         </div>
