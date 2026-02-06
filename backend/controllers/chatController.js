@@ -11,12 +11,10 @@ const askQuestion = async (req, res) => {
       return res.status(400).json({ error: "Question is required" });
     }
 
-    console.log(`[USER PROMPT]: ${question}`); // Log user prompt as requested
-
-    // 1. Safety Check
+    console.log(`[USER PROMPT]: ${question}`);
     const safetyCheck = safetyService.checkSafety(question);
     if (safetyCheck.isUnsafe) {
-      // Save unsafe interaction
+
       await Interaction.create({
         userQuestion: question,
         answer: safetyCheck.warning,
@@ -31,10 +29,8 @@ const askQuestion = async (req, res) => {
       });
     }
 
-    // 2. RAG Pipeline
     const ragResult = await ragService.getAnswer(question);
 
-    // 3. Save to DB
     const interaction = await Interaction.create({
       userQuestion: question,
       answer: ragResult.answer,

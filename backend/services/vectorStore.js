@@ -4,7 +4,6 @@ const path = require("path");
 const STORE_PATH = path.join(__dirname, "../data/vector_store.json");
 let vectorStore = [];
 
-// Simple cosine similarity
 const cosineSimilarity = (vecA, vecB) => {
   const dotProduct = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
   const magnitudeA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
@@ -50,13 +49,11 @@ const search = (queryEmbedding, limit = 3) => {
     score: cosineSimilarity(queryEmbedding, doc.embedding),
   }));
 
-  // Sort by score descending
   results.sort((a, b) => b.score - a.score);
 
   return results.slice(0, limit).map((r) => r.doc);
 };
 
-// Initialize store on load
 loadStore();
 console.log(`Initial Vector Store Size: ${vectorStore.length}`);
 

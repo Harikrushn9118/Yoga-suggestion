@@ -14,8 +14,17 @@ function App() {
 
   const [questionId, setQuestionId] = useState(null);
 
+  const [abortController, setAbortController] = useState(null);
+
   const handleAsk = async () => {
     if (!query.trim()) return;
+
+    // Cancel previous request if exists (though UI prevents this usually)
+    if (abortController) abortController.abort();
+
+    const controller = new AbortController();
+    setAbortController(controller);
+
     setIsLoading(true);
     setResult(null);
     setQuestionId(null);
@@ -27,6 +36,7 @@ function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ question: query }),
+        signal: controller.signal
       });
 
       const data = await response.json();
@@ -38,6 +48,10 @@ function App() {
       });
       setQuestionId(data.id);
     } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted');
+        return; // Don't show error for manual stop
+      }
       console.error("Error fetching answer:", error);
       setResult({
         answer: "Sorry, something went wrong. Please try again later.",
@@ -45,6 +59,15 @@ function App() {
         sources: [],
       });
     } finally {
+      setIsLoading(false);
+      setAbortController(null);
+    }
+  };
+
+  const handleStop = () => {
+    if (abortController) {
+      abortController.abort();
+      setAbortController(null);
       setIsLoading(false);
     }
   };
@@ -84,6 +107,7 @@ function App() {
           query={query}
           setQuery={setQuery}
           handleAsk={handleAsk}
+          handleStop={handleStop}
           isLoading={isLoading}
         />
 

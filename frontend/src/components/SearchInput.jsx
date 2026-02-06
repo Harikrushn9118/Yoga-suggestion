@@ -1,6 +1,6 @@
-import { Send, Activity } from "lucide-react";
+import { Send, Square } from "lucide-react";
 
-function SearchInput({ query, setQuery, handleAsk, isLoading }) {
+function SearchInput({ query, setQuery, handleAsk, handleStop, isLoading }) {
   return (
     <div className="w-full max-w-2xl relative group z-10">
       <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl opacity-20 group-hover:opacity-40 transition duration-500 blur-lg"></div>
@@ -9,17 +9,21 @@ function SearchInput({ query, setQuery, handleAsk, isLoading }) {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleAsk()}
-          placeholder="Ask anything about yoga..."
-          className="flex-1 bg-transparent border-none outline-none px-6 py-4 text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 w-full"
+          onKeyDown={(e) => !isLoading && e.key === "Enter" && handleAsk()}
+          placeholder={isLoading ? "Thinking..." : "Ask anything about yoga..."}
+          disabled={isLoading}
+          className={`flex-1 bg-transparent border-none outline-none px-6 py-4 text-lg text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 w-full disabled:opacity-60 disabled:cursor-not-allowed`}
         />
         <button
-          onClick={handleAsk}
-          disabled={isLoading || !query.trim()}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg shadow-indigo-600/20 active:scale-95 cursor-pointer"
+          onClick={isLoading ? handleStop : handleAsk}
+          disabled={!isLoading && !query.trim()}
+          className={`${isLoading
+              ? "bg-red-500 hover:bg-red-600 shadow-red-500/20"
+              : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/20"
+            } text-white p-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg active:scale-95 cursor-pointer`}
         >
           {isLoading ? (
-            <Activity className="w-6 h-6 animate-spin" />
+            <Square className="w-6 h-6 fill-current" />
           ) : (
             <Send className="w-6 h-6" />
           )}

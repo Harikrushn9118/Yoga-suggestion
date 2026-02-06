@@ -8,7 +8,6 @@ const {
 const fs = require("fs");
 const path = require("path");
 
-// Use Gemini ONLY for the final answer generation
 const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
 const getAnswer = async (question) => {
@@ -16,15 +15,12 @@ const getAnswer = async (question) => {
     console.log("------------------------------------------------");
     console.log("New Question:", question);
 
-    // 1. Generate Query Embedding (Locally - No API Limit!)
     console.log("1. Generating embedding locally (Xenova)...");
     const queryEmbedding = await getEmbedding(question);
 
-    // 2. Retrieve Relevant Chunks from Pinecone
     console.log("2. Querying Pinecone for context...");
     const matches = await queryVectors(queryEmbedding, 3);
 
-    // Map matches to context text
     const context = matches.map((match) => match.metadata.text).join("\n\n");
     const sources = matches.map(
       (match) => match.metadata.source || "General Knowledge"
@@ -32,7 +28,7 @@ const getAnswer = async (question) => {
 
     console.log(`   Found ${matches.length} relevant matches.`);
 
-    // 3. Construct Prompt
+
     const prompt = `
     You are a helpful and knowledgeable Yoga Assistant. 
     Use the following context to answer the user's question.
@@ -55,7 +51,6 @@ const getAnswer = async (question) => {
     Answer:
     `;
 
-    // 4. Generate Answer (Gemini)
     console.log("3. Asking Gemini (Generation)...");
     const result = await model.generateContent(prompt);
     const response = await result.response;

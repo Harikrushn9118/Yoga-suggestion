@@ -4,7 +4,7 @@ const pinecone = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY,
 });
 
-const indexName = process.env.PINECONE_INDEX_NAME || "yoga-rag";
+const indexName = process.env.PINECONE_INDEX_NAME || "yoga-suggestion";
 
 const upsertVectors = async (vectors) => {
   // vectors array format defaults to: [{ id, values, metadata }]
@@ -43,7 +43,6 @@ const ensureIndex = async () => {
           },
         },
       });
-      // Wait for index to be ready
       console.log("Waiting for index initialization...");
       await new Promise((resolve) => setTimeout(resolve, 20000));
     }
