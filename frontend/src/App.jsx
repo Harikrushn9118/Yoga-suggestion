@@ -30,7 +30,8 @@ function App() {
     setQuestionId(null);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/ask`, {
+      const API_URL = import.meta.env.VITE_API_URL || "https://yoga-suggestion.onrender.com";
+      const response = await fetch(`${API_URL}/ask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +76,8 @@ function App() {
   const handleFeedback = async (type) => {
     if (!questionId) return;
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/feedback`, {
+      const API_URL = import.meta.env.VITE_API_URL || "https://yoga-suggestion.onrender.com";
+      await fetch(`${API_URL}/feedback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

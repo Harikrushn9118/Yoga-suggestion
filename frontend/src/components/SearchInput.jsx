@@ -1,4 +1,4 @@
-import { Send, Square } from "lucide-react";
+import { Send, Circle } from "lucide-react";
 
 function SearchInput({ query, setQuery, handleAsk, handleStop, isLoading }) {
   return (
@@ -18,14 +18,17 @@ function SearchInput({ query, setQuery, handleAsk, handleStop, isLoading }) {
           onClick={isLoading ? handleStop : handleAsk}
           disabled={!isLoading && !query.trim()}
           className={`${isLoading
-              ? "bg-red-500 hover:bg-red-600 shadow-red-500/20"
-              : "bg-teal-600 hover:bg-teal-700 shadow-teal-600/20"
-            } text-white p-4 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg active:scale-95 cursor-pointer`}
+              ? "bg-gray-100 dark:bg-zinc-700/50 hover:bg-gray-200 dark:hover:bg-zinc-700"
+              : "bg-teal-600 hover:bg-teal-700 shadow-teal-600/20 text-white"
+            } p-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg active:scale-95 cursor-pointer flex items-center justify-center min-w-[3rem] min-h-[3rem]`}
         >
           {isLoading ? (
-            <Square className="w-6 h-6 fill-current" />
+            <div className="relative">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75"></span>
+              <Circle className="relative w-4 h-4 fill-rose-500 text-rose-500" />
+            </div>
           ) : (
-            <Send className="w-6 h-6" />
+            <Send className="w-5 h-5" />
           )}
         </button>
       </div>

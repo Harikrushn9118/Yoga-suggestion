@@ -10,7 +10,7 @@ function Header({ hasResult }) {
         <div className="p-3 bg-teal-600 rounded-2xl shadow-lg shadow-teal-600/20 text-white animate-float">
           <Leaf className="w-8 h-8" />
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-emerald-600 dark:from-teal-400 dark:to-emerald-400">
+        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-emerald-600 dark:from-teal-300 dark:to-emerald-300 pb-2">
           Yogaflow
         </h1>
       </div>
