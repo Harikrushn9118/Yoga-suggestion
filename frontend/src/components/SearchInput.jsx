@@ -18,15 +18,12 @@ function SearchInput({ query, setQuery, handleAsk, handleStop, isLoading }) {
           onClick={isLoading ? handleStop : handleAsk}
           disabled={!isLoading && !query.trim()}
           className={`${isLoading
-              ? "bg-gray-100 dark:bg-zinc-700/50 hover:bg-gray-200 dark:hover:bg-zinc-700"
+              ? "bg-transparent text-rose-600 dark:text-rose-500 hover:opacity-80"
               : "bg-teal-600 hover:bg-teal-700 shadow-teal-600/20 text-white"
-            } p-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg active:scale-95 cursor-pointer flex items-center justify-center min-w-[3rem] min-h-[3rem]`}
+            } p-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 cursor-pointer flex items-center justify-center min-w-[3rem] min-h-[3rem]`}
         >
           {isLoading ? (
-            <div className="relative">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400 opacity-75"></span>
-              <Circle className="relative w-4 h-4 fill-rose-500 text-rose-500" />
-            </div>
+            <Circle className="w-4 h-4 fill-current" />
           ) : (
             <Send className="w-5 h-5" />
           )}
