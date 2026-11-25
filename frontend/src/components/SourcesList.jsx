@@ -10,15 +10,19 @@ function SourcesList({ sources }) {
         Sources
       </div>
       <div className="flex flex-wrap gap-2">
-        {sources.map((source) => (
+        {sources.map((source, index) => {
+          const title = typeof source === "string" ? source : source.title;
+          const key = typeof source === "string" ? `${source}-${index}` : source.id;
+          return (
           <span
-            key={source.id}
+            key={key}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-zinc-800 text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-zinc-700 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors cursor-default"
           >
-            {source.title}
+            {title}
             <ChevronRight className="w-3 h-3 opacity-50" />
           </span>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
