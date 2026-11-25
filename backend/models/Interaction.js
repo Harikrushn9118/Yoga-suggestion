@@ -1,6 +1,18 @@
 const mongoose = require("mongoose");
 
 const interactionSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+    index: true,
+  },
+  conversationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Conversation",
+    default: null,
+    index: true,
+  },
   userQuestion: {
     type: String,
     required: true,

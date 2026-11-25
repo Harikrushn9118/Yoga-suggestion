@@ -10,7 +10,7 @@ const path = require("path");
 
 const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
-const getAnswer = async (question) => {
+const getAnswer = async (question, conversationHistory = []) => {
   try {
     console.log("------------------------------------------------");
     console.log("New Question:", question);
@@ -28,6 +28,12 @@ const getAnswer = async (question) => {
 
     console.log(`   Found ${matches.length} relevant matches.`);
 
+    const recentConversation = conversationHistory
+      .filter((message) => ["user", "assistant"].includes(message.role) && typeof message.content === "string")
+      .slice(-10)
+      .map((message) => `${message.role === "user" ? "User" : "Assistant"}: ${message.content.slice(0, 2500)}`)
+      .join("\n");
+
 
     const prompt = `
     You are a helpful and knowledgeable Yoga Assistant. 
@@ -42,6 +48,9 @@ const getAnswer = async (question) => {
     Constraints:
     - If the answer is not in the context, use general knowledge but mention it.
     - Do NOT give medical advice.
+
+    Recent conversation (use it to understand follow-up questions):
+    ${recentConversation || "No earlier messages."}
     
     Context:
     ${context}
