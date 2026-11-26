@@ -8,7 +8,7 @@ const {
 const fs = require("fs");
 const path = require("path");
 
-const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 const getAnswer = async (question, conversationHistory = []) => {
   try {
@@ -71,8 +71,9 @@ const getAnswer = async (question, conversationHistory = []) => {
       sources: [...new Set(sources)], // Unique sources
     };
   } catch (error) {
-    console.error("Error in getAnswer:", error);
-    throw error;
+    console.error("Error in getAnswer:", error.message || error);
+    // Re-throw with a clearer message
+    throw new Error(`RAG pipeline failed: ${error.message || error}`);
   }
 };
 

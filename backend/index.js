@@ -7,6 +7,15 @@ const apiRoutes = require("./routes/api");
 const ragService = require("./services/ragService");
 const { optionalAuth } = require("./middleware/auth");
 
+// ── Startup env-var check ───────────────────────────────────
+const required = ["GEMINI_API_KEY", "PINECONE_API_KEY"];
+for (const key of required) {
+  if (!process.env[key]) {
+    console.error(`⚠️  Missing required env var: ${key}`);
+  }
+}
+// ────────────────────────────────────────────────────────────
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 

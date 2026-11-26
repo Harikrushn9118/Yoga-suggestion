@@ -109,9 +109,11 @@ const askQuestion = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in askQuestion:", error);
+    const details = error.message || String(error);
+    // Surface the actual error so it's easier to debug in production
     res.status(500).json({
-      error: "An error occurred while processing your request.",
-      details: error.message,
+      error: `An error occurred while processing your request: ${details}`,
+      details,
     });
   }
 };
