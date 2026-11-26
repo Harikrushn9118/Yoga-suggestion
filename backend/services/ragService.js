@@ -8,7 +8,7 @@ const {
 const fs = require("fs");
 const path = require("path");
 
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-3.8-flash" });
 
 const getAnswer = async (question, conversationHistory = []) => {
   try {
