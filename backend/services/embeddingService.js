@@ -3,10 +3,15 @@ const { pipeline } = require("@xenova/transformers");
 // Use a singleton pattern to lazy-load the model
 let extractor = null;
 
+// 'Xenova/all-mpnet-base-v2' outputs 768-dim vectors, matching the Pinecone index.
+const MODEL_NAME = "Xenova/all-mpnet-base-v2";
+const EMBEDDING_DIM = 768;
+
 const getEmbedding = async (text) => {
   if (!extractor) {
-    // Load the model locally. 'Xenova/all-MiniLM-L6-v2' is small and fast.
-    extractor = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+    console.log(`Loading embedding model: ${MODEL_NAME} (${EMBEDDING_DIM}d)...`);
+    extractor = await pipeline("feature-extraction", MODEL_NAME);
+    console.log("Embedding model loaded.");
   }
 
   // Generate embedding
@@ -16,4 +21,4 @@ const getEmbedding = async (text) => {
   return Array.from(output.data);
 };
 
-module.exports = { getEmbedding };
+module.exports = { getEmbedding, EMBEDDING_DIM };

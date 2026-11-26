@@ -30,11 +30,11 @@ const ensureIndex = async () => {
 
     if (!existingIndexes.includes(indexName)) {
       console.log(
-        `Creating Pinecone index: ${indexName} (Dimensions: 384, Metric: cosine)`
+        `Creating Pinecone index: ${indexName} (Dimensions: 768, Metric: cosine)`
       );
       await pinecone.createIndex({
         name: indexName,
-        dimension: 384, // Metric for Xenova/all-MiniLM-L6-v2
+        dimension: 768, // Dimension for Xenova/all-mpnet-base-v2
         metric: "cosine",
         spec: {
           serverless: {
