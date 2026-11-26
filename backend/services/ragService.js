@@ -8,8 +8,8 @@ const {
 const fs = require("fs");
 const path = require("path");
 
-// Primary and fallback models — if one is overloaded, try the next
-const MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
+// flash-lite first (faster, less congested), then flash as fallback
+const MODELS = ["gemini-3.5-flash-lite", "gemini-3.8-flash"];
 
 // Retry helper with model fallback for transient Gemini API errors
 const callWithRetry = async (genAI, prompt, maxRetries = 2) => {
