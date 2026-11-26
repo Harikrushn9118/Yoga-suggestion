@@ -8,7 +8,25 @@ const {
 const fs = require("fs");
 const path = require("path");
 
-const model = genAI.getGenerativeModel({ model: "gemini-3.8-flash" });
+const MODEL_NAME = "gemini-3.8-flash";
+const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+
+// Retry helper for transient Gemini API errors (503, 429, etc.)
+const callWithRetry = async (fn, maxRetries = 3) => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      const status = err.status || err.httpStatusCode || 0;
+      const isRetryable = [429, 500, 503].includes(status) ||
+        /overloaded|high demand|unavailable|quota/i.test(err.message);
+      if (!isRetryable || attempt === maxRetries) throw err;
+      const delay = Math.min(1000 * Math.pow(2, attempt - 1), 8000);
+      console.log(`Gemini ${status || "error"} — retrying in ${delay}ms (attempt ${attempt}/${maxRetries})...`);
+      await new Promise((r) => setTimeout(r, delay));
+    }
+  }
+};
 
 const getAnswer = async (question, conversationHistory = []) => {
   try {
@@ -61,9 +79,11 @@ const getAnswer = async (question, conversationHistory = []) => {
     `;
 
     console.log("3. Asking Gemini (Generation)...");
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const text = await callWithRetry(async () => {
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      return response.text();
+    });
     console.log("4. Answer received.");
 
     return {
