@@ -15,7 +15,7 @@ const getAnswer = async (question, conversationHistory = []) => {
     console.log("------------------------------------------------");
     console.log("New Question:", question);
 
-    console.log("1. Generating embedding locally (Xenova)...");
+    console.log("1. Generating embedding (Gemini text-embedding-004)...");
     const queryEmbedding = await getEmbedding(question);
 
     console.log("2. Querying Pinecone for context...");
